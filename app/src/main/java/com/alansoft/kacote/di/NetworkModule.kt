@@ -1,6 +1,6 @@
 package com.alansoft.kacote.di
 
-import com.alansoft.kacote.retofit.ApiService
+import com.alansoft.kacote.data.api.KakaoSearchApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +24,7 @@ class NetworkModule {
                     chain.request().newBuilder()
                         .header("Content-Type", "application/json")
                         .header("Accept", "application/json")
+                        .header("Authorization", "0e4079250a010fd99eb6e56583f42202")
                         .build()
                 )
             }
@@ -46,8 +47,8 @@ class NetworkModule {
         }
 
         @Provides
-        fun providesApiService(retrofit: Retrofit): ApiService {
-            return retrofit.create(ApiService::class.java)
+        fun providesKakaoSearchApi(retrofit: Retrofit): KakaoSearchApi {
+            return retrofit.create(KakaoSearchApi::class.java)
         }
     }
 }

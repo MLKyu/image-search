@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.alansoft.kacote.databinding.FragmentSearchBinding
-import com.alansoft.kacote.ui.main.PageViewModel
-import com.alansoft.kacote.ui.main.PlaceholderFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -35,16 +33,14 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java).apply {
-
-        }
+        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return FragmentSearchBinding.inflate(inflater, container, false).root
 
     }
