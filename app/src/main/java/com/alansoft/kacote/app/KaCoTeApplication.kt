@@ -9,6 +9,8 @@ import timber.log.Timber
  * Created by LEE MIN KYU on 2021/03/24
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
+
+@HiltAndroidApp
 class KaCoTeApplication : Application() {
     override fun onCreate() {
         super.onCreate()

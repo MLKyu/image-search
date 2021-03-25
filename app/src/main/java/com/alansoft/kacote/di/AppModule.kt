@@ -5,4 +5,5 @@ package com.alansoft.kacote.di
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 object AppModule {
+
 }

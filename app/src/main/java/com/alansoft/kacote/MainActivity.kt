@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.alansoft.kacote.databinding.ActivityMainBinding
 import com.alansoft.kacote.ui.main.MainFragment
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding

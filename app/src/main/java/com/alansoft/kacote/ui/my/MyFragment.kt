@@ -2,11 +2,13 @@ package com.alansoft.kacote.ui.my
 
 import android.os.Bundle
 import com.alansoft.kacote.ui.main.PlaceholderFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by LEE MIN KYU on 2021/03/25
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
+@AndroidEntryPoint
 class MyFragment : PlaceholderFragment() {
     companion object {
         /**
