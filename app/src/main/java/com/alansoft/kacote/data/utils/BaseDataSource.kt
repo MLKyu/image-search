@@ -22,7 +22,6 @@ abstract class BaseDataSource {
     }
 
     private fun <T> error(message: String): Resource<T> {
-        Timber.d(message)
         return Resource.error("Network failed : $message")
     }
 }

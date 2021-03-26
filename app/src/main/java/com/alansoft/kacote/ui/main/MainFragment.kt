@@ -1,14 +1,22 @@
 package com.alansoft.kacote.ui.main
 
+import android.content.Context
 import android.os.Bundle
+import android.os.IBinder
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alansoft.kacote.R
+import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.MainFragmentBinding
 import com.alansoft.kacote.ui.my.MyFragment
 import com.alansoft.kacote.ui.search.SearchFragment
@@ -64,6 +72,56 @@ class MainFragment : Fragment() {
                 tab.text = context?.resources?.getString(TAB_TITLES[position])
             }.attach()
         }
+
+        initSearchInputListener()
+
+        viewModel.results.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Resource.Status.SUCCESS -> {
+
+                    Toast.makeText(context, result.data.toString(), Toast.LENGTH_LONG).show()
+                }
+                Resource.Status.ERROR -> {
+                    Toast.makeText(context, result.message.toString(), Toast.LENGTH_LONG).show()
+                }
+            }
+
+
+//            binding.searchResource = result
+//            binding.resultCount = result?.data?.size ?: 0
+//            adapter.submitList(result?.data)
+
+        })
+    }
+
+    private fun initSearchInputListener() {
+        binding.input.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                doSearch(view)
+                true
+            } else {
+                false
+            }
+        }
+        binding.input.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                doSearch(view)
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun doSearch(v: View) {
+        val query = binding.input.text.toString()
+        dismissKeyboard(v.windowToken)
+        viewModel.setQuery(query)
+    }
+
+    private fun dismissKeyboard(windowToken: IBinder) {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(windowToken, 0)
     }
 }
 

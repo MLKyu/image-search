@@ -2,6 +2,7 @@ package com.alansoft.kacote.di
 
 import com.alansoft.kacote.data.KakaoSearchDataSource
 import com.alansoft.kacote.data.api.KakaoSearchApi
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -24,7 +26,7 @@ class NetworkModule {
                     chain.request().newBuilder()
                         .header("Content-Type", "application/json")
                         .header("Accept", "application/json")
-                        .header("Authorization", "0e4079250a010fd99eb6e56583f42202")
+                        .header("Authorization", "KakaoAK 0e4079250a010fd99eb6e56583f42202")
                         .build()
                 )
             }
@@ -40,10 +42,15 @@ class NetworkModule {
         fun providesRetrofitBuilder(client: OkHttpClient): Retrofit =
             Retrofit.Builder()
                 .baseUrl("https://dapi.kakao.com/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(
+                    GsonConverterFactory.create(
+                        GsonBuilder()
+//                            .setDateFormat("[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz]")
+                            .create()
+                    )
+                )
                 .client(client)
                 .build()
-
 
         @Provides
         fun providesKakaoSearchApi(retrofit: Retrofit): KakaoSearchApi =
