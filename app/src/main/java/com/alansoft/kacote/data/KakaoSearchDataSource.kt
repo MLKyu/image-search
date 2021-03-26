@@ -8,7 +8,7 @@ import javax.inject.Inject
  * Created by LEE MIN KYU on 2021/03/25
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
-class KakaoSearchManager @Inject constructor(
+class KakaoSearchDataSource @Inject constructor(
     private val kakaoSearchApi: KakaoSearchApi
 ) : BaseDataSource() {
 

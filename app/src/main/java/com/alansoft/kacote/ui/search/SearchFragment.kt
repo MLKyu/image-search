@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import com.alansoft.kacote.R
 import com.alansoft.kacote.databinding.FragmentSearchBinding
+import com.alansoft.kacote.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -15,10 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
-
-    private lateinit var searchViewModel: SearchViewModel
-
-    private var _binding: FragmentSearchBinding? = null
+    private var binding by autoCleared<FragmentSearchBinding>()
+    private val viewModel: SearchViewModel by viewModels()
 
     companion object {
         @JvmStatic
@@ -31,17 +32,20 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentSearchBinding.inflate(inflater, container, false).root
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
 
     }
 

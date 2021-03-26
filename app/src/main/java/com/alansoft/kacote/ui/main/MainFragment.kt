@@ -6,26 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alansoft.kacote.R
 import com.alansoft.kacote.databinding.MainFragmentBinding
 import com.alansoft.kacote.ui.my.MyFragment
 import com.alansoft.kacote.ui.search.SearchFragment
+import com.alansoft.kacote.utils.autoCleared
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by LEE MIN KYU on 2021/03/25
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var binding: MainFragmentBinding
-    private lateinit var viewModel: MainViewModel
+    private var binding by autoCleared<MainFragmentBinding>()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +44,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewPager.let { viewPager ->
             viewPager.adapter = object : FragmentStateAdapter(this@MainFragment) {
                 override fun createFragment(position: Int): Fragment {
