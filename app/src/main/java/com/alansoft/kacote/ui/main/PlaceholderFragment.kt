@@ -7,16 +7,19 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.ui.Base.ResultAdapter
 import com.alansoft.kacote.utils.autoCleared
 
 /**
  * A placeholder fragment containing a simple view.
  */
-open class PlaceholderFragment<B : ViewDataBinding>(private val layoutId: Int) :
+abstract class PlaceholderFragment<B : ViewDataBinding>(private val layoutId: Int) :
     Fragment() {
     var binding by autoCleared<B>()
     var adapter by autoCleared<ResultAdapter>()
+
+    abstract fun clickItem(data: Documents)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +32,8 @@ open class PlaceholderFragment<B : ViewDataBinding>(private val layoutId: Int) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ResultAdapter()
+        adapter = ResultAdapter { item ->
+            clickItem(item)
+        }
     }
 }

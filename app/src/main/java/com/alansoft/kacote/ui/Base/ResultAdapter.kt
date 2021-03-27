@@ -17,7 +17,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
  * Created by LEE MIN KYU on 2021/03/27
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
-class ResultAdapter :
+class ResultAdapter(
+    private val itemCallback: ((Documents) -> Unit)?
+) :
     BaseListAdapter<Documents>(object :
         DiffUtil.ItemCallback<Documents>() {
         override fun areItemsTheSame(
@@ -89,12 +91,12 @@ class ResultAdapter :
                 setPositiveButton(
                     if (type == AdapterType.SEARCH) "저장" else "취소"
                 ) { dialog, id ->
-
+                    itemCallback?.invoke(item)
                 }
                 setNegativeButton(
                     if (type == AdapterType.SEARCH) "취소" else "삭제"
                 ) { dialog, id ->
-
+                    itemCallback?.invoke(item)
                 }
                 create()
             }.show()

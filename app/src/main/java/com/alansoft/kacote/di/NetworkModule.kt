@@ -1,7 +1,9 @@
 package com.alansoft.kacote.di
 
 import com.alansoft.kacote.data.KakaoSearchDataSource
+import com.alansoft.kacote.data.MyDataSource
 import com.alansoft.kacote.data.api.KakaoSearchApi
+import com.alansoft.kacote.repository.KakaoSearchRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -57,8 +59,19 @@ class NetworkModule {
             retrofit.create(KakaoSearchApi::class.java)
 
         @Provides
-        fun provideCharacterRemoteDataSource(kakaoSearchApi: KakaoSearchApi) =
+        fun provideKakaoSearchDataSource(kakaoSearchApi: KakaoSearchApi) =
             KakaoSearchDataSource(kakaoSearchApi)
+
+        @Provides
+        fun provideMyDataSource() =
+            MyDataSource()
+
+        @Provides
+        fun provideKakaoSearchRepository(
+            myDataSource: MyDataSource,
+            kakaoSearchDataSource: KakaoSearchDataSource
+        ) =
+            KakaoSearchRepository(myDataSource, kakaoSearchDataSource)
 
     }
 }

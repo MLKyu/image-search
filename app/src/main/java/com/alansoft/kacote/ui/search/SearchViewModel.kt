@@ -2,9 +2,11 @@ package com.alansoft.kacote.ui.search
 
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
+import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.repository.KakaoSearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -146,6 +148,12 @@ class SearchViewModel @Inject constructor(
                 isRunning = false,
                 errorMessage = null
             )
+        }
+    }
+
+    fun insertMyItem(data: Documents) {
+        viewModelScope.launch {
+            repository.insertItem(data)
         }
     }
 

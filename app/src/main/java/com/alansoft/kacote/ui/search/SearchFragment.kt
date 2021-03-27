@@ -7,11 +7,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alansoft.kacote.R
+import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.FragmentSearchBinding
 import com.alansoft.kacote.ui.Base.ResultAdapter
 import com.alansoft.kacote.ui.main.PlaceholderFragment
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment :
     PlaceholderFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     private fun doSearch(query: String) {
         binding.query = query
@@ -49,7 +49,7 @@ class SearchFragment :
                             result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta.pageable_count == 0
                         result.data?.documents?.let {
                             adapter.submitList(it)
-                        }
+                        } ?: adapter.submitList(null)
                     }
                     Resource.Status.ERROR -> {
                         binding.emptyResult = true
@@ -87,6 +87,10 @@ class SearchFragment :
                 type = ResultAdapter.AdapterType.SEARCH
             }
         }
+    }
+
+    override fun clickItem(data: Documents) {
+        viewModel.insertMyItem(data)
     }
 
     companion object {

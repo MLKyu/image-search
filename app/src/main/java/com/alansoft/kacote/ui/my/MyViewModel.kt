@@ -1,8 +1,11 @@
 package com.alansoft.kacote.ui.my
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.repository.KakaoSearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -14,5 +17,11 @@ class MyViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
 ) : ViewModel() {
 
+    val results = repository.getMy()
 
+    fun deleteItem(data: Documents) {
+        viewModelScope.launch {
+            repository.deleteItem(data)
+        }
+    }
 }

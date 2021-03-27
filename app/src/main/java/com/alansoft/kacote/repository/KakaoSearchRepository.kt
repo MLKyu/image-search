@@ -2,12 +2,15 @@ package com.alansoft.kacote.repository
 
 import androidx.lifecycle.liveData
 import com.alansoft.kacote.data.KakaoSearchDataSource
+import com.alansoft.kacote.data.MyDataSource
 import com.alansoft.kacote.data.model.*
 import com.alansoft.kacote.data.utils.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -15,10 +18,9 @@ import javax.inject.Inject
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 class KakaoSearchRepository @Inject constructor(
+    private val myDataSource: MyDataSource,
     private val kakaoSearchDataSource: KakaoSearchDataSource
 ) {
-
-
     /**
      * query	String	검색을 원하는 질의어	O
     sort	String	결과 문서 정렬 방식, accuracy(정확도순) 또는 recency(최신순), 기본 값 accuracy	X
@@ -120,4 +122,17 @@ class KakaoSearchRepository @Inject constructor(
         return merge
     }
 
+    fun getMy() = myDataSource.resource
+
+    suspend fun insertItem(data: Documents) {
+        coroutineScope {
+            launch { myDataSource.insertDocument(data) }
+        }
+    }
+
+    suspend fun deleteItem(data: Documents) {
+        coroutineScope {
+            launch { myDataSource.deleteDocument(data) }
+        }
+    }
 }

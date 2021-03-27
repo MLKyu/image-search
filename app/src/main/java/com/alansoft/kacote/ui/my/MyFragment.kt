@@ -6,10 +6,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alansoft.kacote.R
+import com.alansoft.kacote.data.model.Documents
+import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.FragmentMyBinding
 import com.alansoft.kacote.ui.Base.ResultAdapter
 import com.alansoft.kacote.ui.main.PlaceholderFragment
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 /**
  * Created by LEE MIN KYU on 2021/03/25
@@ -18,10 +21,30 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyFragment : PlaceholderFragment<FragmentMyBinding>(R.layout.fragment_my) {
 
-    val viewModel: MyViewModel by viewModels()
+    private val viewModel: MyViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.run {
+            results.observe(viewLifecycleOwner, { result ->
+                Timber.d("asdkfghalsdkjfglasdkjfgalksjdlakfd")
+                when (result.status) {
+                    Resource.Status.SUCCESS -> {
+                        result.data.let {
+                            binding.emptyResult = it.isNullOrEmpty()
+                            adapter.submitList(it)
+                        }
+                    }
+                    Resource.Status.ERROR -> {
+                        binding.emptyResult = true
+                    }
+                    else -> {
+
+                    }
+                }
+            })
+        }
 
         binding.myRv.run {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -38,6 +61,10 @@ class MyFragment : PlaceholderFragment<FragmentMyBinding>(R.layout.fragment_my) 
                 type = ResultAdapter.AdapterType.MY
             }
         }
+    }
+
+    override fun clickItem(data: Documents) {
+        viewModel.deleteItem(data)
     }
 
     companion object {
