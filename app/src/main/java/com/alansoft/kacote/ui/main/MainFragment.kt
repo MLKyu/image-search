@@ -24,6 +24,7 @@ import com.alansoft.kacote.utils.autoCleared
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
+
 /**
  * Created by LEE MIN KYU on 2021/03/25
  * Copyright © 2021 Dreamus Company. All rights reserved.
@@ -98,6 +99,7 @@ class MainFragment : Fragment() {
     }
 
     private fun doSearch(v: View) {
+        collapse()
         binding.viewPager.setCurrentItem(TabType.SEARCH_RESULT.ordinal, true)
         val query = binding.inputEt.text.toString()
         dismissKeyboard(v.windowToken)
@@ -107,6 +109,14 @@ class MainFragment : Fragment() {
     private fun dismissKeyboard(windowToken: IBinder) {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun collapse() {
+        binding.appbarLayout.run {
+            val params = layoutParams
+            layoutParams = params
+            setExpanded(false)
+        }
     }
 }
 
