@@ -72,7 +72,7 @@ open class Documents {
 }
 
 data class SearchMerge(
-    val imageMeta: Meta,
-    val vClipMeta: Meta,
+    val imageMeta: Meta?,
+    val vClipMeta: Meta?,
     val documents: List<Documents>
 )

@@ -1,9 +1,6 @@
 package com.alansoft.kacote.di
 
-import com.alansoft.kacote.data.KakaoSearchDataSource
-import com.alansoft.kacote.data.MyDataSource
 import com.alansoft.kacote.data.api.KakaoSearchApi
-import com.alansoft.kacote.repository.KakaoSearchRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -15,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 
 @Module
@@ -40,6 +38,7 @@ class NetworkModule {
                 .build()
         }
 
+        @Singleton
         @Provides
         fun providesRetrofitBuilder(client: OkHttpClient): Retrofit =
             Retrofit.Builder()
@@ -57,21 +56,5 @@ class NetworkModule {
         @Provides
         fun providesKakaoSearchApi(retrofit: Retrofit): KakaoSearchApi =
             retrofit.create(KakaoSearchApi::class.java)
-
-        @Provides
-        fun provideKakaoSearchDataSource(kakaoSearchApi: KakaoSearchApi) =
-            KakaoSearchDataSource(kakaoSearchApi)
-
-        @Provides
-        fun provideMyDataSource() =
-            MyDataSource()
-
-        @Provides
-        fun provideKakaoSearchRepository(
-            myDataSource: MyDataSource,
-            kakaoSearchDataSource: KakaoSearchDataSource
-        ) =
-            KakaoSearchRepository(myDataSource, kakaoSearchDataSource)
-
     }
 }

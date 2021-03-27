@@ -2,6 +2,8 @@ package com.alansoft.kacote.ui.search
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,8 +12,10 @@ import com.alansoft.kacote.R
 import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.FragmentSearchBinding
-import com.alansoft.kacote.ui.Base.ResultAdapter
 import com.alansoft.kacote.ui.main.PlaceholderFragment
+import com.alansoft.kacote.utils.BUNDLE_QUERY
+import com.alansoft.kacote.utils.REQUEST_KEY
+import com.alansoft.kacote.utils.TabType
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -32,9 +36,9 @@ class SearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("requestKey") { key, bundle ->
-            if (key == "requestKey") {
-                val query = bundle.getString("query")
+        setFragmentResultListener(REQUEST_KEY) { key, bundle ->
+            if (key == REQUEST_KEY) {
+                val query = bundle.getString(BUNDLE_QUERY)
                 query?.let {
                     doSearch(it)
                 }
@@ -46,13 +50,13 @@ class SearchFragment :
                 when (result.status) {
                     Resource.Status.SUCCESS -> {
                         binding.emptyResult =
-                            result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta.pageable_count == 0
+                            result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta?.pageable_count == 0
                         result.data?.documents?.let {
                             adapter.submitList(it)
                         } ?: adapter.submitList(null)
                     }
                     Resource.Status.ERROR -> {
-                        binding.emptyResult = true
+                        Toast.makeText(context, result.message, LENGTH_SHORT).show()
                     }
                     else -> {
 
@@ -84,7 +88,12 @@ class SearchFragment :
                 }
             })
             adapter = this@SearchFragment.adapter.apply {
-                type = ResultAdapter.AdapterType.SEARCH
+                type = TabType.SEARCH_RESULT
+                registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                        (this@run.layoutManager as LinearLayoutManager).scrollToPosition(0)
+                    }
+                })
             }
         }
     }

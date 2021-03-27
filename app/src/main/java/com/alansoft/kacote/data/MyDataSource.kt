@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -20,15 +19,11 @@ class MyDataSource @Inject constructor() {
     val resource: LiveData<Resource<List<Documents>>> = _resource
 
     fun insertDocument(data: Documents) {
-        Timber.d("asdkfghalsdkjfglasdkjfgalksjdlakfd")
-
         val temp = resource.value
         temp?.data?.let {
-            Timber.d("asdkfghalsdkjfglasdkjfgalksjdlakfd")
             val tempList = ArrayList<Documents>()
             tempList.addAll(it)
             tempList.add(data)
-            _resource.postValue(Resource.success(tempList))
             _resource.value = Resource.success(tempList)
         }
     }
@@ -39,7 +34,6 @@ class MyDataSource @Inject constructor() {
             val tempList = ArrayList<Documents>()
             tempList.addAll(it)
             tempList.remove(data)
-            _resource.postValue(Resource.success(tempList))
             _resource.value = Resource.success(tempList)
         }
     }

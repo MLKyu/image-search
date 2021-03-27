@@ -3,6 +3,7 @@ package com.alansoft.kacote.data.api
 import com.alansoft.kacote.data.model.ImageDocuments
 import com.alansoft.kacote.data.model.SearchResponse
 import com.alansoft.kacote.data.model.VClipDocuments
+import com.alansoft.kacote.utils.SearchSortType
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,7 +16,7 @@ interface KakaoSearchApi {
     @GET("/v2/search/image")
     suspend fun getSearchImg(
         @Query("query") query: String,
-        @Query("sort") sort: String,
+        @Query("sort") sort: SearchSortType,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchResponse<ImageDocuments>>
@@ -23,7 +24,7 @@ interface KakaoSearchApi {
     @GET("/v2/search/vclip")
     suspend fun getSearchVclip(
         @Query("query") query: String,
-        @Query("sort") sort: String,
+        @Query("sort") sort: SearchSortType,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchResponse<VClipDocuments>>

@@ -2,6 +2,7 @@ package com.alansoft.kacote.data
 
 import com.alansoft.kacote.data.api.KakaoSearchApi
 import com.alansoft.kacote.data.utils.BaseDataSource
+import com.alansoft.kacote.utils.SearchSortType
 import javax.inject.Inject
 
 /**
@@ -12,10 +13,10 @@ class KakaoSearchDataSource @Inject constructor(
     private val kakaoSearchApi: KakaoSearchApi
 ) : BaseDataSource() {
 
-    suspend fun getSearchImg(query: String, sort: String, page: Int, size: Int) =
+    suspend fun getSearchImg(query: String, sort: SearchSortType, page: Int, size: Int) =
         getResult { kakaoSearchApi.getSearchImg(query, sort, page, size) }
 
-    suspend fun getSearchVclip(query: String, sort: String, page: Int, size: Int) =
+    suspend fun getSearchVclip(query: String, sort: SearchSortType, page: Int, size: Int) =
         getResult { kakaoSearchApi.getSearchVclip(query, sort, page, size) }
 
 

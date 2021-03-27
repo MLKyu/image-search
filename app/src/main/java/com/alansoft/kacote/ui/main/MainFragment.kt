@@ -17,6 +17,9 @@ import com.alansoft.kacote.R
 import com.alansoft.kacote.databinding.FragmentMainBinding
 import com.alansoft.kacote.ui.my.MyFragment
 import com.alansoft.kacote.ui.search.SearchFragment
+import com.alansoft.kacote.utils.BUNDLE_QUERY
+import com.alansoft.kacote.utils.REQUEST_KEY
+import com.alansoft.kacote.utils.TabType
 import com.alansoft.kacote.utils.autoCleared
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,18 +58,18 @@ class MainFragment : Fragment() {
             viewPager.adapter = object : FragmentStateAdapter(this@MainFragment) {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-                        1 -> MyFragment.newInstance()
+                        TabType.MY.ordinal -> MyFragment.newInstance()
                         else -> SearchFragment.newInstance()
                     }
                 }
 
                 override fun getItemCount(): Int {
-                    return 2
+                    return TabType.values().size
                 }
             }
 
             TabLayoutMediator(binding.tabs, viewPager) { tab, position ->
-                tab.text = context?.resources?.getString(TAB_TITLES[position])
+                tab.text = context?.resources?.getString(TabType.values()[position].resourceId)
             }.attach()
         }
 
@@ -95,9 +98,10 @@ class MainFragment : Fragment() {
     }
 
     private fun doSearch(v: View) {
+        binding.viewPager.setCurrentItem(TabType.SEARCH_RESULT.ordinal, true)
         val query = binding.inputEt.text.toString()
         dismissKeyboard(v.windowToken)
-        childFragmentManager.setFragmentResult("requestKey", bundleOf("query" to query))
+        childFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_QUERY to query))
     }
 
     private fun dismissKeyboard(windowToken: IBinder) {
@@ -105,8 +109,6 @@ class MainFragment : Fragment() {
         imm?.hideSoftInputFromWindow(windowToken, 0)
     }
 }
-
-enum class Tab
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,

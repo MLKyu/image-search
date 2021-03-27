@@ -9,10 +9,9 @@ import com.alansoft.kacote.R
 import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.FragmentMyBinding
-import com.alansoft.kacote.ui.Base.ResultAdapter
 import com.alansoft.kacote.ui.main.PlaceholderFragment
+import com.alansoft.kacote.utils.TabType
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 /**
  * Created by LEE MIN KYU on 2021/03/25
@@ -28,7 +27,6 @@ class MyFragment : PlaceholderFragment<FragmentMyBinding>(R.layout.fragment_my) 
 
         viewModel.run {
             results.observe(viewLifecycleOwner, { result ->
-                Timber.d("asdkfghalsdkjfglasdkjfgalksjdlakfd")
                 when (result.status) {
                     Resource.Status.SUCCESS -> {
                         result.data.let {
@@ -58,7 +56,7 @@ class MyFragment : PlaceholderFragment<FragmentMyBinding>(R.layout.fragment_my) 
             })
 
             adapter = this@MyFragment.adapter.apply {
-                type = ResultAdapter.AdapterType.MY
+                type = TabType.MY
             }
         }
     }
