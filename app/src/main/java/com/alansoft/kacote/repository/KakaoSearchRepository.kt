@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -66,15 +65,14 @@ class KakaoSearchRepository @Inject constructor(
                 searchImgQuery(query),
                 searchVClipQuery(query)
             ) { list1, list2 ->
-                Timber.d("sdfljkahsdljhasdlfj")
                 if (list1.status == Resource.Status.SUCCESS || list2.status == Resource.Status.SUCCESS) {
                     if (list1.data != null || list2.data != null) {
                         Resource.success(sort(list1.data, list2.data))
                     } else {
-                        Resource.error("검색 결과가 없습니다.", null)
+                        Resource.error(list1.message ?: list2.message ?: "검색 결과가 없습니다.", null)
                     }
                 } else if (list1.status == Resource.Status.ERROR && list2.status == Resource.Status.ERROR) {
-                    Resource.error("ERROR", null)
+                    Resource.error(list1.message ?: list2.message ?: "네트워크 연결 실패", null)
                 } else {
                     Resource.loading()
                 }

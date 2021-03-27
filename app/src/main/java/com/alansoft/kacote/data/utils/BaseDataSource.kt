@@ -1,7 +1,6 @@
 package com.alansoft.kacote.data.utils
 
 import retrofit2.Response
-import timber.log.Timber
 
 /**
  * Created by LEE MIN KYU on 2021/03/25
@@ -22,6 +21,6 @@ abstract class BaseDataSource {
     }
 
     private fun <T> error(message: String): Resource<T> {
-        return Resource.error("Network failed : $message")
+        return Resource.error("연결 실패 : $message")
     }
 }

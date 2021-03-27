@@ -157,4 +157,9 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun refresh() {
+        query.value?.let {
+            query.value = it
+        }
+    }
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alansoft.kacote.R
 import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
+import com.alansoft.kacote.data.utils.RetryCallback
 import com.alansoft.kacote.databinding.FragmentSearchBinding
 import com.alansoft.kacote.ui.main.PlaceholderFragment
 import com.alansoft.kacote.utils.BUNDLE_QUERY
@@ -47,6 +48,7 @@ class SearchFragment :
 
         viewModel.run {
             results.observe(viewLifecycleOwner, { result ->
+                binding.resource = result
                 when (result.status) {
                     Resource.Status.SUCCESS -> {
                         binding.emptyResult =
@@ -94,6 +96,12 @@ class SearchFragment :
                         (this@run.layoutManager as LinearLayoutManager).scrollToPosition(0)
                     }
                 })
+            }
+        }
+
+        binding.callback = object : RetryCallback {
+            override fun retry() {
+                viewModel.refresh()
             }
         }
     }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.alansoft.kacote.data.utils.Resource" />
+
+        <import type="com.alansoft.kacote.data.utils.Resource.Status" />
+
+        <variable
+            name="resource"
+            type="Resource" />
+
+        <variable
+            name="callback"
+            type="com.alansoft.kacote.data.utils.RetryCallback" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding"
+        android:visibility="@{resource.data == null ? View.VISIBLE : View.GONE, default=gone}">
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="@{resource.status == Status.LOADING ? View.VISIBLE : View.GONE, default=gone}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> callback.retry()}"
+            android:text="retry"
+            android:visibility="@{resource.status == Status.ERROR ? View.VISIBLE : View.GONE, default=gone}" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{resource.message}"
+            android:visibility="@{resource.status == Status.ERROR ? View.VISIBLE : View.GONE, default=gone}" />
+    </LinearLayout>
+</layout>
+
