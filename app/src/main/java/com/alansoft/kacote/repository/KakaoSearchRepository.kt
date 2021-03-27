@@ -62,7 +62,7 @@ class KakaoSearchRepository @Inject constructor(
             }
         }
 
-    fun searchQuery1(query: String) =
+    private fun searchQuery1(query: String) =
         flow<Resource<SearchResponse<ImageDocuments>>> {
             emit(Resource.loading())
             val responseStatus = kakaoSearchDataSource.getSearchImg(query, "recency", 1, 20)
@@ -83,7 +83,7 @@ class KakaoSearchRepository @Inject constructor(
             }
         }
 
-    fun searchQuery2(query: String) =
+    private fun searchQuery2(query: String) =
         flow<Resource<SearchResponse<VClipDocuments>>> {
             emit(Resource.loading())
             val responseStatus = kakaoSearchDataSource.getSearchVclip(query, "recency", 1, 20)
@@ -103,7 +103,6 @@ class KakaoSearchRepository @Inject constructor(
                 }
             }
         }
-
 
     private fun sort(
         data1: SearchResponse<ImageDocuments>,

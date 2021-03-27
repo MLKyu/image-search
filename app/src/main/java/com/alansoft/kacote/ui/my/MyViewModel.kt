@@ -13,4 +13,6 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
 ) : ViewModel() {
+
+
 }
