@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alansoft.kacote.R
 import com.alansoft.kacote.data.model.ImageDocuments
 import com.alansoft.kacote.databinding.ImageItemBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 
 /**
  * Created by LEE MIN KYU on 2021/03/27
@@ -54,5 +56,10 @@ class ResultAdapter :
         binding.description.text = item.doc_url
         binding.title.text = item.collection
         binding.subTitle.text = item.display_sitename
+
+        Glide.with(binding.root)
+            .load(item.thumbnail_url)
+            .transform(CenterCrop())
+            .into(binding.thumbnail)
     }
 }

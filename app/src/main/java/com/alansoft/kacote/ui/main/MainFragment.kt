@@ -55,7 +55,7 @@ class MainFragment : Fragment() {
             viewPager.adapter = object : FragmentStateAdapter(this@MainFragment) {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-                        1 -> MyFragment.newInstance(position)
+                        1 -> MyFragment.newInstance()
                         else -> SearchFragment.newInstance()
                     }
                 }

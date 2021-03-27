@@ -1,6 +1,5 @@
 package com.alansoft.kacote.ui.my
 
-import android.os.Bundle
 import com.alansoft.kacote.ui.main.PlaceholderFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,12 +15,8 @@ class MyFragment : PlaceholderFragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
-            return MyFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
+        fun newInstance(): PlaceholderFragment {
+            return MyFragment()
         }
     }
 }
