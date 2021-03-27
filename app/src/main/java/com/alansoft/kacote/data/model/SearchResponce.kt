@@ -11,6 +11,13 @@ data class SearchResponse<T>(
     val documents: List<T>
 )
 
+/**
+ * Name	Type	Description
+total_count	Integer	검색된 문서 수
+pageable_count	Integer	total_count 중 노출 가능 문서 수
+is_end	Boolean	현재 페이지가 마지막 페이지인지 여부, 값이 false면 page를 증가시켜 다음 페이지를 요청할 수 있음
+ * {"is_end":true,"pageable_count":6,"total_count":18}
+ */
 data class Meta(
     val total_count: Int,
     val pageable_count: Int,
@@ -28,7 +35,7 @@ play_time	Integer	동영상 재생시간, 초 단위
 thumbnail	String	동영상 미리보기 URL
 author	String	동영상 업로더
  */
-data class ImageDocuments(
+data class VClipDocuments(
     val title: String?,
     val url: String?,
     val datetime: Date?,      // Datetime 문서 글 작성시간, ISO 8601
@@ -51,7 +58,7 @@ doc_url	String	문서 URL
 datetime	Datetime	문서 작성시간, ISO 8601
 [YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz]
  */
-data class VClipDocuments(
+data class ImageDocuments(
     val collection: String?,
     val thumbnail_url: String?,
     val image_url: String?,
