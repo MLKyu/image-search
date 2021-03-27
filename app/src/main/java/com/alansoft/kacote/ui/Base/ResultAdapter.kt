@@ -6,7 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.alansoft.kacote.R
+import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.model.ImageDocuments
+import com.alansoft.kacote.data.model.VClipDocuments
 import com.alansoft.kacote.databinding.ImageItemBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -17,22 +19,20 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 class ResultAdapter :
-    BaseListAdapter<ImageDocuments, ImageItemBinding>(object :
-        DiffUtil.ItemCallback<ImageDocuments>() {
+    BaseListAdapter<Documents, ImageItemBinding>(object :
+        DiffUtil.ItemCallback<Documents>() {
         override fun areItemsTheSame(
-            oldItem: ImageDocuments,
-            newItem: ImageDocuments
+            oldItem: Documents,
+            newItem: Documents
         ): Boolean {
-            return oldItem.collection == newItem.collection
-                    && oldItem.display_sitename == newItem.display_sitename
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ImageDocuments,
-            newItem: ImageDocuments
+            oldItem: Documents,
+            newItem: Documents
         ): Boolean {
-            return oldItem.doc_url == newItem.doc_url
-                    && oldItem.datetime == newItem.datetime
+            return oldItem.datetime == newItem.datetime
         }
     }) {
 
@@ -63,15 +63,28 @@ class ResultAdapter :
         return binding
     }
 
-    override fun bind(binding: ImageItemBinding, item: ImageDocuments) {
+    override fun bind(binding: ImageItemBinding, item: Documents) {
         binding.run {
-            description.text = item.doc_url
-            title.text = item.collection
-            subTitle.text = item.display_sitename
-            Glide.with(root)
-                .load(item.thumbnail_url)
-                .transform(CenterCrop())
-                .into(thumbnail)
+
+            if (item is ImageDocuments) {
+                description.text = item.doc_url
+                title.text = item.collection
+                subTitle.text = item.display_sitename
+                Glide.with(root)
+                    .load(item.thumbnail_url)
+                    .transform(CenterCrop())
+                    .into(thumbnail)
+            }
+
+            if (item is VClipDocuments) {
+                description.text = item.title
+                title.text = item.author
+                subTitle.text = item.url
+                Glide.with(root)
+                    .load(item.thumbnail)
+                    .transform(CenterCrop())
+                    .into(thumbnail)
+            }
         }
     }
 

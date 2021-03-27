@@ -2,7 +2,6 @@ package com.alansoft.kacote.ui.search
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,14 +45,14 @@ class SearchFragment :
             results.observe(viewLifecycleOwner, { result ->
                 when (result.status) {
                     Resource.Status.SUCCESS -> {
-                        binding.emptyResult = result.data?.meta?.pageable_count == 0
+                        binding.emptyResult =
+                            result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta.pageable_count == 0
                         result.data?.documents?.let {
                             adapter.submitList(it)
                         }
                     }
                     Resource.Status.ERROR -> {
-                        Toast.makeText(context, result.message.toString(), Toast.LENGTH_LONG)
-                            .show()
+                        binding.emptyResult = true
                     }
                     else -> {
 
@@ -68,7 +67,7 @@ class SearchFragment :
                     binding.loadingMore = loadingMore.isRunning
                     val error = loadingMore.errorMessageIfNotHandled
                     if (error != null) {
-                        Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+//                        Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
                     }
                 }
             })
@@ -79,9 +78,9 @@ class SearchFragment :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
-                    if (lastPosition == adapter?.itemCount ?: 0 - 1) {
-                        viewModel.loadNextPage()
-                    }
+//                    if (lastPosition == adapter?.itemCount ?: 0 - 1) {
+//                        viewModel.loadNextPage()
+//                    }
                 }
             })
             adapter = this@SearchFragment.adapter.apply {

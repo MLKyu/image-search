@@ -2,10 +2,12 @@ package com.alansoft.kacote.repository
 
 import androidx.lifecycle.liveData
 import com.alansoft.kacote.data.KakaoSearchDataSource
-import com.alansoft.kacote.data.model.ImageDocuments
-import com.alansoft.kacote.data.model.SearchResponse
+import com.alansoft.kacote.data.model.*
 import com.alansoft.kacote.data.utils.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -43,4 +45,80 @@ class KakaoSearchRepository @Inject constructor(
                 }
             }
         }
+
+    fun searchMerge(query: String) =
+        liveData<Resource<SearchMerge>>(Dispatchers.IO) {
+            combine(
+                searchQuery1(query),
+                searchQuery2(query)
+            ) { list1, list2 ->
+                if (list1.data != null && list2.data != null) {
+                    Resource.success(sort(list1.data, list2.data))
+                } else {
+                    Resource.error("", null)
+                }
+            }.collect {
+                emit(it)
+            }
+        }
+
+    fun searchQuery1(query: String) =
+        flow<Resource<SearchResponse<ImageDocuments>>> {
+            emit(Resource.loading())
+            val responseStatus = kakaoSearchDataSource.getSearchImg(query, "recency", 1, 20)
+            when (responseStatus.status) {
+                Resource.Status.SUCCESS -> {
+                    responseStatus.data?.let {
+                        emit(Resource.success(it))
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    responseStatus.message?.let {
+                        emit(Resource.error(it))
+                    }
+                }
+                else -> {
+                    // loading
+                }
+            }
+        }
+
+    fun searchQuery2(query: String) =
+        flow<Resource<SearchResponse<VClipDocuments>>> {
+            emit(Resource.loading())
+            val responseStatus = kakaoSearchDataSource.getSearchVclip(query, "recency", 1, 20)
+            when (responseStatus.status) {
+                Resource.Status.SUCCESS -> {
+                    responseStatus.data?.let {
+                        emit(Resource.success(it))
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    responseStatus.message?.let {
+                        emit(Resource.error(it))
+                    }
+                }
+                else -> {
+                    // loading
+                }
+            }
+        }
+
+
+    private fun sort(
+        data1: SearchResponse<ImageDocuments>,
+        data2: SearchResponse<VClipDocuments>
+    ): SearchMerge {
+
+        val mergeList = ArrayList<Documents>()
+
+        mergeList.addAll(data1.documents)
+        mergeList.addAll(data2.documents)
+
+        mergeList.sortByDescending { it.datetime }
+
+        val merge = SearchMerge(data1.meta, data2.meta, mergeList)
+        return merge
+    }
+
 }

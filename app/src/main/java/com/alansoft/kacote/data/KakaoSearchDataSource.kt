@@ -15,6 +15,8 @@ class KakaoSearchDataSource @Inject constructor(
     suspend fun getSearchImg(query: String, sort: String, page: Int, size: Int) =
         getResult { kakaoSearchApi.getSearchImg(query, sort, page, size) }
 
-    suspend fun getSearchVideo(query: String, sort: String, page: Int, size: Int) =
-        getResult { kakaoSearchApi.getSearchVideo(query, sort, page, size) }
+    suspend fun getSearchVclip(query: String, sort: String, page: Int, size: Int) =
+        getResult { kakaoSearchApi.getSearchVclip(query, sort, page, size) }
+
+
 }

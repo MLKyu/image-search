@@ -38,12 +38,10 @@ author	String	동영상 업로더
 data class VClipDocuments(
     val title: String?,
     val url: String?,
-    val datetime: Date?,      // Datetime 문서 글 작성시간, ISO 8601
-    // [YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz]
     val play_time: Int,
     val thumbnail: String?,
     val author: String?
-)
+) : Documents()
 
 /**
  * documents
@@ -65,9 +63,16 @@ data class ImageDocuments(
     val width: String?,
     val height: String?,
     val display_sitename: String?,
-    val doc_url: String?,
-    val datetime: Date?
+    val doc_url: String?
+) : Documents()
+
+open class Documents {
+    val datetime: Date? = null   // Datetime 문서 글 작성시간, ISO 8601
+    // [YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz]
+}
+
+data class SearchMerge(
+    val imageMeta: Meta,
+    val vClipMeta: Meta,
+    val documents: List<Documents>
 )
-
-
-

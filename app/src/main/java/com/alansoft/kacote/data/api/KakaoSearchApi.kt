@@ -21,7 +21,7 @@ interface KakaoSearchApi {
     ): Response<SearchResponse<ImageDocuments>>
 
     @GET("/v2/search/vclip")
-    suspend fun getSearchVideo(
+    suspend fun getSearchVclip(
         @Query("query") query: String,
         @Query("sort") sort: String,
         @Query("page") page: Int,

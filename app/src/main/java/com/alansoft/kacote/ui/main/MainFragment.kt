@@ -74,20 +74,22 @@ class MainFragment : Fragment() {
     }
 
     private fun initSearchInputListener() {
-        binding.inputEt.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                doSearch(view)
-                true
-            } else {
-                false
+        binding.inputEt.run {
+            setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    doSearch(view)
+                    true
+                } else {
+                    false
+                }
             }
-        }
-        binding.inputEt.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                doSearch(view)
-                true
-            } else {
-                false
+            setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    doSearch(view)
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
@@ -103,6 +105,8 @@ class MainFragment : Fragment() {
         imm?.hideSoftInputFromWindow(windowToken, 0)
     }
 }
+
+enum class Tab
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,

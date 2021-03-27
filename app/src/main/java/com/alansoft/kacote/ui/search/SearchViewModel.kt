@@ -17,7 +17,7 @@ class SearchViewModel @Inject constructor(
     private val nextPageHandler = NextPageHandler(repository)
 
     val results = query.switchMap { search ->
-        repository.searchQuery(search)
+        repository.searchMerge(search)
     }
 
     val loadMoreStatus: LiveData<LoadMoreState>
@@ -35,14 +35,14 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadNextPage() {
-        if (results.value?.data?.meta?.is_end != false) {
-        } else {
-            query.value?.let {
-                if (it.isNotBlank()) {
-                    nextPageHandler.queryNextPage(it)
-                }
+//        if (results.value?.data?.meta?.is_end != false) {
+//        } else {
+        query.value?.let {
+            if (it.isNotBlank()) {
+                nextPageHandler.queryNextPage(it)
             }
         }
+//        }
     }
 
     class LoadMoreState(val isRunning: Boolean, val errorMessage: String?) {
