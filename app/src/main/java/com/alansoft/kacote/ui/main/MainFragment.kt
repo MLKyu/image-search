@@ -14,7 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alansoft.kacote.R
-import com.alansoft.kacote.databinding.MainFragmentBinding
+import com.alansoft.kacote.databinding.FragmentMainBinding
 import com.alansoft.kacote.ui.my.MyFragment
 import com.alansoft.kacote.ui.search.SearchFragment
 import com.alansoft.kacote.utils.autoCleared
@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private var binding by autoCleared<MainFragmentBinding>()
+    private var binding by autoCleared<FragmentMainBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +41,7 @@ class MainFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.main_fragment,
+                R.layout.fragment_main,
                 container,
                 false
             )
@@ -74,7 +74,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initSearchInputListener() {
-        binding.input.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
+        binding.inputEt.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 doSearch(view)
                 true
@@ -82,7 +82,7 @@ class MainFragment : Fragment() {
                 false
             }
         }
-        binding.input.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
+        binding.inputEt.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 doSearch(view)
                 true
@@ -93,7 +93,7 @@ class MainFragment : Fragment() {
     }
 
     private fun doSearch(v: View) {
-        val query = binding.input.text.toString()
+        val query = binding.inputEt.text.toString()
         dismissKeyboard(v.windowToken)
         childFragmentManager.setFragmentResult("requestKey", bundleOf("query" to query))
     }

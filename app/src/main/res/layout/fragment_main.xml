@@ -23,21 +23,18 @@
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
-                    android:id="@+id/input"
+                    android:id="@+id/input_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="검색 하세요"
+                    android:hint="@string/text_input_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="textNoSuggestions"
                     tools:text="google" />

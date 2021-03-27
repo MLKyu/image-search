@@ -3,4 +3,5 @@
     <string name="tab_text_1">검색 결과</string>
     <string name="tab_text_2">내 보관함</string>
     <string name="empty_result"><b>%s</b>에 대한 검색결과가 없습니다.\nㆍ검색어의 단어 수를 줄이거나, 보다 일반적인 단어로 검색해 보세요.\nㆍ두 단어 이상의 키워드로 검색 하신 경우, 정확하게 띄어쓰기를 한 후 검색해 보세요.\nㆍ키워드에 있는 특수문자를 뺀 후에 검색해 보세요.</string>
+    <string name="text_input_hint">검색어를 입력 하세요.</string>
 </resources>
