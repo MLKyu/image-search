@@ -1,12 +1,8 @@
 package com.alansoft.kacote.ui.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +11,7 @@ import com.alansoft.kacote.R
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.databinding.FragmentSearchBinding
 import com.alansoft.kacote.ui.Base.ResultAdapter
-import com.alansoft.kacote.utils.autoCleared
+import com.alansoft.kacote.ui.main.PlaceholderFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,26 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
-    private var binding by autoCleared<FragmentSearchBinding>()
-    private val viewModel: SearchViewModel by viewModels()
+class SearchFragment :
+    PlaceholderFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    private var adapter by autoCleared<ResultAdapter>()
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): SearchFragment = SearchFragment()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
-
-        return binding.root
-    }
+    val viewModel: SearchViewModel by viewModels()
 
     private fun doSearch(query: String) {
         binding.query = query
@@ -75,6 +55,9 @@ class SearchFragment : Fragment() {
                         Toast.makeText(context, result.message.toString(), Toast.LENGTH_LONG)
                             .show()
                     }
+                    else -> {
+
+                    }
                 }
             })
 
@@ -91,7 +74,6 @@ class SearchFragment : Fragment() {
             })
         }
 
-        val resultAdapter = ResultAdapter()
         binding.serachRv.run {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -102,8 +84,14 @@ class SearchFragment : Fragment() {
                     }
                 }
             })
-            adapter = resultAdapter
+            adapter = this@SearchFragment.adapter.apply {
+                type = ResultAdapter.AdapterType.SEARCH
+            }
         }
-        adapter = resultAdapter
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): SearchFragment = SearchFragment()
     }
 }
