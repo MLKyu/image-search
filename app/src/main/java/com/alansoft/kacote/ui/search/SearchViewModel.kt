@@ -72,8 +72,6 @@ class SearchViewModel @Inject constructor(
         val loadMoreState = MutableLiveData<LoadMoreState>()
         private var query: String? = null
         private var _hasMore: Boolean = false
-        val hasMore
-            get() = _hasMore
         private var nextPage = FIRST_PAGE
 
         init {
