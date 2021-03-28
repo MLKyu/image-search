@@ -17,6 +17,7 @@ import com.alansoft.kacote.ui.main.PlaceholderFragment
 import com.alansoft.kacote.utils.BUNDLE_QUERY
 import com.alansoft.kacote.utils.REQUEST_KEY
 import com.alansoft.kacote.utils.TabType
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -73,7 +74,7 @@ class SearchFragment :
                     binding.loadingMore = loadingMore.isRunning
                     val error = loadingMore.errorMessageIfNotHandled
                     if (error != null) {
-//                        Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
                     }
                 }
             })

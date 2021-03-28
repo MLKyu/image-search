@@ -86,9 +86,11 @@ class SearchViewModel @Inject constructor(
             }
             unregister()
             this.query = query
-
             nextPage += 1
-
+            loadMoreState.value = LoadMoreState(
+                isRunning = true,
+                errorMessage = null
+            )
             nextPageLiveData = repository.searchMerge(query, nextPage).switchMap { result ->
                 liveData {
                     when (result.status) {
@@ -121,10 +123,6 @@ class SearchViewModel @Inject constructor(
                     }
                 }
             }
-            loadMoreState.value = LoadMoreState(
-                isRunning = true,
-                errorMessage = null
-            )
             nextPageLiveData?.observeForever(this)
         }
 
