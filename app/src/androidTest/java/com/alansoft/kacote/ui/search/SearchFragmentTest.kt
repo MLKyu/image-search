@@ -9,10 +9,14 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
 import com.alansoft.kacote.R
 import com.alansoft.kacote.data.model.Documents
 import com.alansoft.kacote.data.utils.Resource
+import com.alansoft.kacote.testing.SingleFragmentActivity
 import org.hamcrest.CoreMatchers
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -23,8 +27,19 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class SearchFragmentTest {
 
+    @get:Rule
+    var activityRule: ActivityTestRule<SingleFragmentActivity> =
+        ActivityTestRule(SingleFragmentActivity::class.java)
+
+
     private val results = MutableLiveData<Resource<List<Documents>>>()
     private val loadMoreStatus = MutableLiveData<SearchViewModel.LoadMoreState>()
+    private val searchFragment = SearchFragment()
+
+    @Before
+    fun init() {
+        activityRule.activity.setFragment(searchFragment)
+    }
 
     @Test
     fun search() {

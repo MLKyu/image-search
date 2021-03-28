@@ -1,9 +1,5 @@
 package com.alansoft.kacote.api
 
-import com.alansoft.kacote.data.utils.BaseDataSource
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
