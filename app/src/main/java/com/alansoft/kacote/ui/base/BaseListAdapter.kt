@@ -1,4 +1,4 @@
-package com.alansoft.kacote.ui.Base
+package com.alansoft.kacote.ui.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

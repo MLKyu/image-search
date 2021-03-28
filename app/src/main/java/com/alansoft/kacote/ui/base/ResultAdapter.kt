@@ -1,4 +1,4 @@
-package com.alansoft.kacote.ui.Base
+package com.alansoft.kacote.ui.base
 
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding

@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.alansoft.kacote.data.model.Documents
-import com.alansoft.kacote.ui.Base.ResultAdapter
+import com.alansoft.kacote.ui.base.ResultAdapter
 import com.alansoft.kacote.utils.autoCleared
 
 /**

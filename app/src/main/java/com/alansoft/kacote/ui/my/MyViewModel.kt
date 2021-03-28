@@ -17,7 +17,7 @@ class MyViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
 ) : ViewModel() {
 
-    val results = repository.getMy()
+    val results by lazy { repository.getMy() }
 
     fun deleteItem(data: Documents) {
         viewModelScope.launch {

@@ -17,11 +17,10 @@ class SearchViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
 ) : ViewModel() {
 
-    private val next = MutableLiveData<Int>()
-    private val query = MutableLiveData<String>()
-    private val nextPageHandler = NextPageHandler(repository)
-    val _results = query.switchMap { search -> repository.searchMerge(search) } as MutableLiveData
-    val results: LiveData<Resource<SearchMerge>> = _results
+    private val query by lazy { MutableLiveData<String>() }
+    private val nextPageHandler by lazy { NextPageHandler(repository) }
+    val _results by lazy { query.switchMap { search -> repository.searchMerge(search) } as MutableLiveData }
+    val results: LiveData<Resource<SearchMerge>> by lazy { _results }
 
     val loadMoreStatus: LiveData<LoadMoreState>
         get() = nextPageHandler.loadMoreState
