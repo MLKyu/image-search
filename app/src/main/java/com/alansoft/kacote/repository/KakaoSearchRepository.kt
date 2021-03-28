@@ -25,12 +25,7 @@ class KakaoSearchRepository @Inject constructor(
     private val myDataSource: MyDataSource,
     private val kakaoSearchDataSource: KakaoSearchDataSource
 ) {
-    /**
-     * query	String	검색을 원하는 질의어	O
-    sort	String	결과 문서 정렬 방식, accuracy(정확도순) 또는 recency(최신순), 기본 값 accuracy	X
-    page	Integer	결과 페이지 번호, 1~50 사이의 값, 기본 값 1	X
-    size	Integer	한 페이지에 보여질 문서 수, 1~50 사이의 값, 기본 값 10	X
-     */
+
     fun searchMerge(query: String, page: Int = FIRST_PAGE) =
         liveData(Dispatchers.IO) {
             searchImgQuery(query, page).zip(searchVClipQuery(query, page)) { list1, list2 ->

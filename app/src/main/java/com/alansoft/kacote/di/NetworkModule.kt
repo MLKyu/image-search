@@ -50,7 +50,7 @@ class NetworkModule {
                 .addConverterFactory(
                     GsonConverterFactory.create(
                         GsonBuilder()
-//                            .setDateFormat("[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz]")
+//                            .setDateFormat("")
                             .create()
                     )
                 )

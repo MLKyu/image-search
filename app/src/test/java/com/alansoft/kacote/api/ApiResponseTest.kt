@@ -1,5 +1,6 @@
 package com.alansoft.kacote.api
 
+import org.junit.Rule
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
@@ -9,5 +10,6 @@ import org.junit.runners.JUnit4
  */
 @RunWith(JUnit4::class)
 class ApiResponseTest {
+
 
 }
