@@ -1,8 +1,7 @@
 # kabank-cote
-This is a simple project with most of the jetpack packages and retrofit 2.9.0, it was built for learning purpose and will be updated time to time
+This is a coding test project with most of the ViewPager, TabLayout, kotlinx-coroutines-android and retrofit, it was built for submission
 
 ## Built with
-* Shared Element
 * Retrofit 2.9.0
 * Coroutine
 * Live Data
@@ -13,7 +12,7 @@ This is a simple project with most of the jetpack packages and retrofit 2.9.0, i
 * Viewbinding
 * Material design components
 * Kotlin
-* Kotlin Flow 
+* Kotlin Flow
 
 ## Author
 MLK
