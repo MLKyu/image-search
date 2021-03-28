@@ -15,6 +15,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
+/**
+ * Created by LEE MIN KYU on 2021/03/24
+ * Copyright © 2021 Dreamus Company. All rights reserved.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {

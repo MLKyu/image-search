@@ -12,7 +12,8 @@ import com.alansoft.kacote.ui.base.ResultAdapter
 import com.alansoft.kacote.utils.autoCleared
 
 /**
- * A placeholder fragment containing a simple view.
+ * Created by LEE MIN KYU on 2021/03/24
+ * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 abstract class PlaceholderFragment<B : ViewDataBinding>(private val layoutId: Int) :
     Fragment() {

@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Created by LEE MIN KYU on 2021/03/24
+ * Copyright © 2021 Dreamus Company. All rights reserved.
+ */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
