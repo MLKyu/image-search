@@ -17,12 +17,11 @@ class SearchViewModel @Inject constructor(
     private val repository: KakaoSearchRepository
 ) : ViewModel() {
 
+    private val next = MutableLiveData<Int>()
     private val query = MutableLiveData<String>()
     private val nextPageHandler = NextPageHandler(repository)
-
-    val results: LiveData<Resource<SearchMerge>> = query.switchMap { search ->
-        repository.searchMerge(search)
-    }
+    val _results = query.switchMap { search -> repository.searchMerge(search) } as MutableLiveData
+    val results: LiveData<Resource<SearchMerge>> = _results
 
     val loadMoreStatus: LiveData<LoadMoreState>
         get() = nextPageHandler.loadMoreState
@@ -50,6 +49,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+
     class LoadMoreState(val isRunning: Boolean, val errorMessage: String?) {
         private var handledError = false
 
@@ -71,7 +71,7 @@ class SearchViewModel @Inject constructor(
         private var _hasMore: Boolean = false
         val hasMore
             get() = _hasMore
-        private var nextPage = 1
+        private var nextPage = FIRST_PAGE
 
         init {
             reset()
@@ -84,7 +84,7 @@ class SearchViewModel @Inject constructor(
             unregister()
             this.query = query
 
-            nextPage = nextPage++
+            nextPage += 1
 
             nextPageLiveData = repository.searchMerge(query, nextPage).switchMap { result ->
                 liveData {
@@ -107,11 +107,11 @@ class SearchViewModel @Inject constructor(
                                         newResult
                                     )
                                 )
-//                                results.value = successResult // TODO
+                                _results.value = successResult
                             }
                         }
                         Resource.Status.ERROR -> {
-                            emit(Resource.error<Boolean>(result.message ?: ""))
+                            emit(Resource.error<Boolean>(result.message ?: "로드에 실패 하였습니다."))
                         }
                         else -> {
                         }
@@ -172,7 +172,7 @@ class SearchViewModel @Inject constructor(
                 isRunning = false,
                 errorMessage = null
             )
-            nextPage = 1
+            nextPage = FIRST_PAGE
         }
     }
 

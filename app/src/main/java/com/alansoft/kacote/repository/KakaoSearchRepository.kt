@@ -9,11 +9,10 @@ import com.alansoft.kacote.utils.FIRST_PAGE
 import com.alansoft.kacote.utils.PAGE_SIZE
 import com.alansoft.kacote.utils.SearchSortType
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,7 +37,7 @@ class KakaoSearchRepository @Inject constructor(
                 searchImgQuery(query, page),
                 searchVClipQuery(query, page)
             ) { list1, list2 ->
-                if (list1.status == Resource.Status.SUCCESS || list2.status == Resource.Status.SUCCESS) {
+                if (list1.status == Resource.Status.SUCCESS && list2.status == Resource.Status.SUCCESS) {
                     if (list1.data != null || list2.data != null) {
                         Resource.success(sort(list1.data, list2.data))
                     } else {
@@ -120,8 +119,7 @@ class KakaoSearchRepository @Inject constructor(
             mergeList.sortByDescending { it.datetime }
         }
 
-        val merge = SearchMerge(data1?.meta, data2?.meta, mergeList)
-        return merge
+        return SearchMerge(data1?.meta, data2?.meta, mergeList)
     }
 
     fun getMy() = liveData {
@@ -129,16 +127,14 @@ class KakaoSearchRepository @Inject constructor(
     }
 
     suspend fun insertItem(data: Documents) {
-        coroutineScope {
-            launch {
-                myDataSource.insertDocument(data)
-            }
+        withContext(Dispatchers.Main) {
+            myDataSource.insertDocument(data)
         }
     }
 
     suspend fun deleteItem(data: Documents) {
-        coroutineScope {
-            launch { myDataSource.deleteDocument(data) }
+        withContext(Dispatchers.Main) {
+            myDataSource.deleteDocument(data)
         }
     }
 }

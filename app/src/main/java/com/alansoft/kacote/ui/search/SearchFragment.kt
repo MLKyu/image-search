@@ -51,8 +51,8 @@ class SearchFragment :
                 binding.resource = result
                 when (result.status) {
                     Resource.Status.SUCCESS -> {
-                        binding.emptyResult =
-                            result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta?.pageable_count == 0
+                        binding.emptyResult = adapter.currentList.isNullOrEmpty() &&
+                                result.data?.imageMeta?.pageable_count == 0 && result.data.vClipMeta?.pageable_count == 0
                         result.data?.documents?.let {
                             adapter.submitList(it)
                         } ?: adapter.submitList(null)
@@ -91,11 +91,6 @@ class SearchFragment :
             })
             adapter = this@SearchFragment.adapter.apply {
                 type = TabType.SEARCH_RESULT
-                registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                        (this@run.layoutManager as LinearLayoutManager).scrollToPosition(0)
-                    }
-                })
             }
         }
 

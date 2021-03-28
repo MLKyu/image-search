@@ -18,6 +18,4 @@ class KakaoSearchDataSource @Inject constructor(
 
     suspend fun getSearchVclip(query: String, sort: SearchSortType, page: Int, size: Int) =
         getResult { kakaoSearchApi.getSearchVclip(query, sort, page, size) }
-
-
 }
