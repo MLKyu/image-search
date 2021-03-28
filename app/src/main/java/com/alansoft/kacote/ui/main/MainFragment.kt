@@ -72,6 +72,8 @@ class MainFragment : Fragment() {
             TabLayoutMediator(binding.tabs, viewPager) { tab, position ->
                 tab.text = context?.resources?.getString(TabType.values()[position].resourceId)
             }.attach()
+
+            viewPager.currentItem = TabType.MY.ordinal
         }
 
         initSearchInputListener()
@@ -119,8 +121,3 @@ class MainFragment : Fragment() {
         }
     }
 }
-
-private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2
-)

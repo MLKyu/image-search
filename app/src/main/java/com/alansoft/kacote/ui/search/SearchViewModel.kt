@@ -3,8 +3,10 @@ package com.alansoft.kacote.ui.search
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.alansoft.kacote.data.model.Documents
+import com.alansoft.kacote.data.model.SearchMerge
 import com.alansoft.kacote.data.utils.Resource
 import com.alansoft.kacote.repository.KakaoSearchRepository
+import com.alansoft.kacote.utils.FIRST_PAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -18,7 +20,7 @@ class SearchViewModel @Inject constructor(
     private val query = MutableLiveData<String>()
     private val nextPageHandler = NextPageHandler(repository)
 
-    val results = query.switchMap { search ->
+    val results: LiveData<Resource<SearchMerge>> = query.switchMap { search ->
         repository.searchMerge(search)
     }
 
@@ -37,14 +39,15 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadNextPage() {
-//        if (results.value?.data?.meta?.is_end != false) {
-//        } else {
-        query.value?.let {
-            if (it.isNotBlank()) {
-                nextPageHandler.queryNextPage(it)
+        results.value?.data?.run {
+            if (imageMeta?.is_end == false || vClipMeta?.is_end == false) {
+                query.value?.let {
+                    if (it.isNotBlank()) {
+                        nextPageHandler.queryNextPage(it)
+                    }
+                }
             }
         }
-//        }
     }
 
     class LoadMoreState(val isRunning: Boolean, val errorMessage: String?) {
@@ -60,7 +63,7 @@ class SearchViewModel @Inject constructor(
             }
     }
 
-    class NextPageHandler(private val repository: KakaoSearchRepository) :
+    inner class NextPageHandler(private val repository: KakaoSearchRepository) :
         Observer<Resource<Boolean>> {
         private var nextPageLiveData: LiveData<Resource<Boolean>>? = null
         val loadMoreState = MutableLiveData<LoadMoreState>()
@@ -68,6 +71,7 @@ class SearchViewModel @Inject constructor(
         private var _hasMore: Boolean = false
         val hasMore
             get() = _hasMore
+        private var nextPage = 1
 
         init {
             reset()
@@ -80,14 +84,34 @@ class SearchViewModel @Inject constructor(
             unregister()
             this.query = query
 
-            nextPageLiveData = repository.searchQuery(query).switchMap { result ->
+            nextPage = nextPage++
+
+            nextPageLiveData = repository.searchMerge(query, nextPage).switchMap { result ->
                 liveData {
                     when (result.status) {
                         Resource.Status.SUCCESS -> {
                             emit(Resource.success(true))
+
+                            val newResult = arrayListOf<Documents>()
+                            val tempResult = results.value
+                            tempResult?.data?.documents?.let {
+                                newResult.addAll(it)
+                            }
+                            result.data?.documents?.let {
+                                newResult.addAll(it)
+
+                                val successResult = Resource.success(
+                                    SearchMerge(
+                                        result.data.imageMeta,
+                                        result.data.vClipMeta,
+                                        newResult
+                                    )
+                                )
+//                                results.value = successResult // TODO
+                            }
                         }
                         Resource.Status.ERROR -> {
-                            emit(Resource.success(false))
+                            emit(Resource.error<Boolean>(result.message ?: ""))
                         }
                         else -> {
                         }
@@ -148,6 +172,7 @@ class SearchViewModel @Inject constructor(
                 isRunning = false,
                 errorMessage = null
             )
+            nextPage = 1
         }
     }
 

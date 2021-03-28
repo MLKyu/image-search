@@ -32,38 +32,11 @@ class KakaoSearchRepository @Inject constructor(
     page	Integer	결과 페이지 번호, 1~50 사이의 값, 기본 값 1	X
     size	Integer	한 페이지에 보여질 문서 수, 1~50 사이의 값, 기본 값 10	X
      */
-    fun searchQuery(query: String) =
-        liveData<Resource<SearchResponse<ImageDocuments>>>(Dispatchers.IO) {
-            emit(Resource.loading())
-            val responseStatus =
-                kakaoSearchDataSource.getSearchImg(
-                    query,
-                    SearchSortType.RECENCY,
-                    FIRST_PAGE,
-                    PAGE_SIZE
-                )
-            when (responseStatus.status) {
-                Resource.Status.SUCCESS -> {
-                    responseStatus.data?.let {
-                        emit(Resource.success(it))
-                    }
-                }
-                Resource.Status.ERROR -> {
-                    responseStatus.message?.let {
-                        emit(Resource.error(it))
-                    }
-                }
-                else -> {
-                    // loading
-                }
-            }
-        }
-
-    fun searchMerge(query: String) =
+    fun searchMerge(query: String, page: Int = FIRST_PAGE) =
         liveData(Dispatchers.IO) {
             combine(
-                searchImgQuery(query),
-                searchVClipQuery(query)
+                searchImgQuery(query, page),
+                searchVClipQuery(query, page)
             ) { list1, list2 ->
                 if (list1.status == Resource.Status.SUCCESS || list2.status == Resource.Status.SUCCESS) {
                     if (list1.data != null || list2.data != null) {
@@ -82,11 +55,11 @@ class KakaoSearchRepository @Inject constructor(
             }
         }
 
-    private fun searchImgQuery(query: String) =
+    private fun searchImgQuery(query: String, page: Int = FIRST_PAGE) =
         flow<Resource<SearchResponse<ImageDocuments>>> {
             emit(Resource.loading())
             val responseStatus = kakaoSearchDataSource.getSearchImg(
-                query, SearchSortType.RECENCY, FIRST_PAGE, PAGE_SIZE
+                query, SearchSortType.RECENCY, page, PAGE_SIZE
             )
             when (responseStatus.status) {
                 Resource.Status.SUCCESS -> {
@@ -105,14 +78,14 @@ class KakaoSearchRepository @Inject constructor(
             }
         }
 
-    private fun searchVClipQuery(query: String) =
+    private fun searchVClipQuery(query: String, page: Int = FIRST_PAGE) =
         flow<Resource<SearchResponse<VClipDocuments>>> {
             emit(Resource.loading())
             val responseStatus =
                 kakaoSearchDataSource.getSearchVclip(
                     query,
                     SearchSortType.RECENCY,
-                    FIRST_PAGE,
+                    page,
                     PAGE_SIZE
                 )
             when (responseStatus.status) {
@@ -157,7 +130,9 @@ class KakaoSearchRepository @Inject constructor(
 
     suspend fun insertItem(data: Documents) {
         coroutineScope {
-            launch { myDataSource.insertDocument(data) }
+            launch {
+                myDataSource.insertDocument(data)
+            }
         }
     }
 

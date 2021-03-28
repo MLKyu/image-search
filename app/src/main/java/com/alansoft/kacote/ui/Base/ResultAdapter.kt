@@ -28,14 +28,14 @@ class ResultAdapter(
             oldItem: Documents,
             newItem: Documents
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.datetime == newItem.datetime
         }
 
         override fun areContentsTheSame(
             oldItem: Documents,
             newItem: Documents
         ): Boolean {
-            return oldItem.datetime == newItem.datetime
+            return oldItem.hashCode() == newItem.hashCode()
         }
     }) {
 
@@ -81,15 +81,21 @@ class ResultAdapter(
 
         binding.root.setOnClickListener {
             AlertDialog.Builder(binding.root.context).run {
-                setTitle(if (type == TabType.SEARCH_RESULT) "저장 하시겠습니까?" else "삭제 하시겠습니까?")
-                setMessage("선택하세요.")
+                setTitle(
+                    if (type == TabType.SEARCH_RESULT) context.getString(R.string.are_you_save) else context.getString(
+                        R.string.are_you_delete
+                    )
+                )
+                setMessage(context.getString(R.string.choose))
                 setPositiveButton(
-                    if (type == TabType.SEARCH_RESULT) "저장" else "삭제"
+                    if (type == TabType.SEARCH_RESULT) context.getString(R.string.save) else context.getString(
+                        R.string.delete
+                    )
                 ) { dialog, id ->
                     itemCallback?.invoke(item)
                 }
                 setNegativeButton(
-                    "취소"
+                    context.getString(R.string.cancel)
                 ) { dialog, id ->
 
                 }

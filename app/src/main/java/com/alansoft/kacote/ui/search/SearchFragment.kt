@@ -84,9 +84,9 @@ class SearchFragment :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
-//                    if (lastPosition == adapter?.itemCount ?: 0 - 1) {
-//                        viewModel.loadNextPage()
-//                    }
+                    if (lastPosition == (adapter?.itemCount ?: RecyclerView.NO_POSITION) - 1) {
+                        viewModel.loadNextPage()
+                    }
                 }
             })
             adapter = this@SearchFragment.adapter.apply {
