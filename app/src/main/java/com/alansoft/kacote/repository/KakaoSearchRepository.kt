@@ -10,8 +10,8 @@ import com.alansoft.kacote.utils.PAGE_SIZE
 import com.alansoft.kacote.utils.SearchSortType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,11 +33,8 @@ class KakaoSearchRepository @Inject constructor(
      */
     fun searchMerge(query: String, page: Int = FIRST_PAGE) =
         liveData(Dispatchers.IO) {
-            combine(
-                searchImgQuery(query, page),
-                searchVClipQuery(query, page)
-            ) { list1, list2 ->
-                if (list1.status == Resource.Status.SUCCESS && list2.status == Resource.Status.SUCCESS) {
+            searchImgQuery(query, page).zip(searchVClipQuery(query, page)) { list1, list2 ->
+                if (list1.status == Resource.Status.SUCCESS || list2.status == Resource.Status.SUCCESS) {
                     if (list1.data != null || list2.data != null) {
                         Resource.success(sort(list1.data, list2.data))
                     } else {
