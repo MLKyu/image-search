@@ -44,7 +44,7 @@ class SearchFragmentTest {
         activityRule.runOnUiThread {
             onView(withId(R.id.progress_bar)).check(matches(CoreMatchers.not(isDisplayed())))
             onView(withId(R.id.input_et)).perform(
-                typeText("foo"),
+                typeText("이민규"),
                 pressKey(KeyEvent.KEYCODE_ENTER)
             )
             results.postValue(Resource.loading(null))
@@ -55,7 +55,7 @@ class SearchFragmentTest {
     @Test
     fun error() {
         activityRule.runOnUiThread {
-            results.postValue(Resource.error("failed to load", null))
+            results.postValue(Resource.error("실패", null))
             onView(withId(R.id.error_msg)).check(matches(isDisplayed()))
         }
     }
@@ -73,8 +73,8 @@ class SearchFragmentTest {
     @Test
     fun loadMoreProgressError() {
         activityRule.runOnUiThread {
-            loadMoreStatus.postValue(SearchViewModel.LoadMoreState(true, "QQ"))
-            onView(withText("QQ")).check(
+            loadMoreStatus.postValue(SearchViewModel.LoadMoreState(true, "이민규"))
+            onView(withText("이민규")).check(
                 matches(
                     withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
                 )

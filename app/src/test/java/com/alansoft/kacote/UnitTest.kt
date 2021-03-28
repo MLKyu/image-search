@@ -1,8 +1,8 @@
 package com.alansoft.kacote
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
+import org.mockito.Mockito
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -15,3 +15,5 @@ class UnitTest {
         assertEquals(4, 2 + 2)
     }
 }
+
+inline fun <reified T> mock(): T = Mockito.mock(T::class.java)

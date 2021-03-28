@@ -46,7 +46,7 @@ class KakaoSearchRepository @Inject constructor(
             }
         }
 
-    private fun searchImgQuery(query: String, page: Int = FIRST_PAGE) =
+     fun searchImgQuery(query: String, page: Int = FIRST_PAGE) =
         flow<Resource<SearchResponse<ImageDocuments>>> {
             emit(Resource.loading())
             val responseStatus = kakaoSearchDataSource.getSearchImg(
