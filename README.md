@@ -21,8 +21,8 @@ MLK
 Coding Test for submission
 
 ## Review
-Flo, Result
-Monad 공부
++Flo, Result
++Monad 공부
 코루틴이면 그냥 데이터 받고 catch 로 예외처리 해도 되는데 왜 result 를?
 Flo stream study 필요
 DiffUtil content same 사용법
