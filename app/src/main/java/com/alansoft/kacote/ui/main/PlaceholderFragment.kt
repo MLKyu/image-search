@@ -28,6 +28,7 @@ abstract class PlaceholderFragment<B : ViewDataBinding>(private val layoutId: In
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
