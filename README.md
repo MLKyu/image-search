@@ -1,4 +1,4 @@
-# kabank-cote
+# image-search
 This is a coding test project with most of the ViewPager, TabLayout, coroutines and retrofit, it was built for submission
 
 ## Built with
